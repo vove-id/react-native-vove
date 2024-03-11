@@ -6,8 +6,8 @@ const LINKING_ERROR =
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo Go\n';
 
-const Vove = NativeModules.Vove
-  ? NativeModules.Vove
+const Vove = NativeModules.VoveModule
+  ? NativeModules.VoveModule
   : new Proxy(
       {},
       {
@@ -17,6 +17,13 @@ const Vove = NativeModules.Vove
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
-  return Vove.multiply(a, b);
+export enum VoveEnvironment {
+  production = 'production',
+  sandbox = 'sandbox',
+}
+export function processIDMatching(
+  env: VoveEnvironment,
+  sessionToken: string
+): Promise<number> {
+  return Vove.processIDMatching(env, sessionToken);
 }

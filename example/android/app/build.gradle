@@ -76,7 +76,7 @@ android {
 
     namespace "com.voveexample"
     defaultConfig {
-        applicationId "com.voveexample"
+        applicationId "com.voveid.reactnativeexample"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
