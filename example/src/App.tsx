@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const AuthURL = 'https://demo-api.voveid.com';
 const authToken =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtoYWxpZCIsInN1YiI6MiwiaWF0IjoxNzA3ODE2NTgyLCJleHAiOjE3MTA0MDg1ODJ9.Bg53pyJzuZxW__vZMs0hgZKCCftCXq8CrmVvrI_gk7c';
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtoYWxpZCIsInN1YiI6MiwiaWF0IjoxNzEwNjgzNTg2LCJleHAiOjE3MTMyNzU1ODZ9.HFAuT0EiDqUJpGKgMsspVHTCZQBX3CQIHhg3FB87GZg';
 
 const startUserSession = async () => {
   try {

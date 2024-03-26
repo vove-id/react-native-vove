@@ -479,8 +479,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.vovId.reactexampleapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.voveId.reactnativeexample;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.voveId.reactexampleapp;
 				PRODUCT_NAME = VoveExample;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -507,7 +507,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.voveId.reactnativeexample;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.vovId.reactexampleapp;
 				PRODUCT_NAME = VoveExample;
 				SWIFT_VERSION = 5.0;

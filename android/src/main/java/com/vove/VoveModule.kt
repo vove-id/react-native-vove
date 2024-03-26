@@ -1,6 +1,5 @@
 package com.vove
 
-import android.util.Log
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
@@ -22,13 +21,12 @@ class VoveModule(reactContext: ReactApplicationContext) :
   // See https://reactnative.dev/docs/native-modules-android
   @ReactMethod
   fun processIDMatching(env: String, sessionToken: String, promise: Promise) {
+    val environment = determineEnvironment(env)
     val currentActivity = currentActivity
-
-    Log.d("VoveModule", "processIDMatching: $env, $sessionToken")
     currentActivity?.let {
       Vove.processIDMatching(
         it,
-        VoveEnvironment.SANDBOX,
+        environment,
         sessionToken
       ) { verificationResult: VerificationResult ->
         runOnUiThread {
@@ -38,22 +36,29 @@ class VoveModule(reactContext: ReactApplicationContext) :
             }
 
             VerificationResult.FAILURE -> {
-              promise.reject("failure")
+              promise.reject("failure", "Verification failed")
             }
 
             VerificationResult.PENDING -> {
               promise.resolve("pending")
             }
 
-//          VerificationResult.CANCELLED -> {
-//            promise.resolve("cancelled")
-//          }
+            VerificationResult.CANCELLED -> {
+              promise.resolve("cancelled")
+            }
           }
         }
       }
     }
   }
 
+  fun determineEnvironment(env: String): VoveEnvironment {
+    return when (env) {
+      "sandbox" -> VoveEnvironment.SANDBOX
+      "production" -> VoveEnvironment.PRODUCTION
+      else -> throw IllegalArgumentException("Unknown environment")
+    }
+  }
   companion object {
     const val NAME = "VoveModule"
   }

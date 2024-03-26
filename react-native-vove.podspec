@@ -38,5 +38,5 @@ Pod::Spec.new do |s|
     s.dependency "ReactCommon/turbomodule/core"
    end
   end
-  s.dependency 'VoveSDK', '~> 0.1.1'
+  s.dependency 'VoveSDK', '0.2.0'
 end
