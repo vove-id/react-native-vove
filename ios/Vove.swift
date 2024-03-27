@@ -19,7 +19,7 @@ class VoveModule: NSObject {
               switch (verificationResult) {
               case .failure:
                   let error = NSError(domain: "", code: 200, userInfo: [NSLocalizedDescriptionKey: "Verification failed"])
-                  reject("failed", "Verification failed", error)
+                  reject("failure", "Verification failed", error)
                   break
               case .pending: resolve("pending")
                   break
