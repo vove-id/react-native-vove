@@ -41,14 +41,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/VOVE-ID/react-native-vove.git"
+    "url": "git+https://github.com/vove-id/react-native-vove.git"
   },
-  "author": "taitmbarek <taitmbarek@gmail.com> (https://github.com/VOVE-ID/react-native-vove)",
+  "author": "taitmbarek <taitmbarek@gmail.com> (https://github.com/vove-id/react-native-vove)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/VOVE-ID/react-native-vove/issues"
+    "url": "https://github.com/vove-id/react-native-vove/issues"
   },
-  "homepage": "https://github.com/VOVE-ID/react-native-vove#readme",
+  "homepage": "https://github.com/vove-id/react-native-vove#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
