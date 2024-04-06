@@ -42,7 +42,7 @@ processIDMatching(env: VoveEnvironment, sessionToken: string): Promise<string>
 #### Example Usage
 
 ```javascript
-import { processIDMatching, VoveEnvironment } from 'react-native-vove-sdk';
+import { processIDMatching, VoveEnvironment } from '@vove-id/react-native-sdk';
 
 processIDMatching(VoveEnvironment.Production, 'your_session_token_here')
   .then((status) => {
