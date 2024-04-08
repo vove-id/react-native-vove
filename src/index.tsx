@@ -18,12 +18,19 @@ const Vove = NativeModules.VoveModule
     );
 
 export enum VoveEnvironment {
-  production = 'production',
-  sandbox = 'sandbox',
+  Production = 'production',
+  Sandbox = 'sandbox',
 }
+
+export const enum VoveStatus {
+  Canceled = 'canceled', // user canceled flow
+  Pending = 'pending', // pending more validations
+  Success = 'success', // success
+}
+
 export function processIDMatching(
   env: VoveEnvironment,
   sessionToken: string
-): Promise<number> {
+): Promise<VoveStatus> {
   return Vove.processIDMatching(env, sessionToken);
 }
