@@ -2,7 +2,7 @@
 
 @interface RCT_EXTERN_MODULE(VoveModule, NSObject)
 
-RCT_EXTERN_METHOD(processIDMatching:(NSString)Env withSessionToken:(NSString)sessionToken
+RCT_EXTERN_METHOD(processIDMatching:(NSDictionary *)config
                  withResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)
 

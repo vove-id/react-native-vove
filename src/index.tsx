@@ -27,10 +27,19 @@ export const enum VoveStatus {
   Pending = 'pending', // pending more validations
   Success = 'success', // success
 }
+export const enum VoveLocale {
+  EN = 'EN',
+  FR = 'FR',
+  AR = 'AR',
+  AR_MA = 'AR_MA',
+}
+type VoveConfig = {
+  environment: VoveEnvironment;
+  sessionToken: string;
+  enableVocalGuidance?: boolean;
+  locale?: VoveLocale;
+};
 
-export function processIDMatching(
-  env: VoveEnvironment,
-  sessionToken: string
-): Promise<VoveStatus> {
-  return Vove.processIDMatching(env, sessionToken);
+export function processIDMatching(config: VoveConfig): Promise<VoveStatus> {
+  return Vove.processIDMatching(config);
 }
