@@ -1,14 +1,19 @@
 import * as React from 'react';
-
-import { StyleSheet, View, Text, Pressable } from 'react-native';
-import { processIDMatching, VoveEnvironment } from 'react-native-vove';
 import { useEffect, useRef } from 'react';
+
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+  processIDMatching,
+  VoveEnvironment,
+  VoveLocale,
+  VoveStatus,
+} from '@vove-id/react-native-sdk';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 
 const AuthURL = 'https://demo-api.voveid.com';
 const authToken =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtoYWxpZCIsInN1YiI6MiwiaWF0IjoxNzEwNjgzNTg2LCJleHAiOjE3MTMyNzU1ODZ9.HFAuT0EiDqUJpGKgMsspVHTCZQBX3CQIHhg3FB87GZg';
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtoYWxpZCIsInN1YiI6MiwiaWF0IjoxNzEzMzA0ODY3LCJleHAiOjE3MTU4OTY4Njd9.AGEdx0SSvOWB0l0tkfMFdrYm2qImHQGFzzjySAYTNEE';
 
 const startUserSession = async () => {
   try {
@@ -30,7 +35,7 @@ const startUserSession = async () => {
   }
 };
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
+  const [result, setResult] = React.useState<VoveStatus | undefined>();
   const sessionToken = useRef<string | undefined>();
 
   useEffect(() => {
@@ -40,9 +45,12 @@ export default function App() {
   }, []);
   const onStartPress = () => {
     if (sessionToken.current) {
-      processIDMatching(VoveEnvironment.sandbox, sessionToken.current).then(
-        setResult
-      );
+      processIDMatching({
+        environment: VoveEnvironment.Sandbox,
+        sessionToken: sessionToken.current,
+        enableVocalGuidance: true,
+        locale: VoveLocale.AR_MA,
+      }).then(setResult);
     }
   };
 
