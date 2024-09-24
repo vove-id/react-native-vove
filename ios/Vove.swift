@@ -2,7 +2,7 @@ import VoveSDK
 
 @objc(VoveModule)
 class VoveModule: NSObject {
-    @objc(processIDMatching:withResolver:withRejecter:)
+    @objc(start:withResolver:withRejecter:)
     func start(config: NSDictionary, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
       guard let environment = config["environment"] as? String,
                 let sessionToken = config["sessionToken"] as? String else {

@@ -28,12 +28,12 @@ The core functionality of the VoveSDK is to perform ID verification through a st
 
 ### Starting ID Verification
 
-To initiate the ID verification process, use the `processIDMatching function. This function requires a configuration object which includes the environment, session token, and optional settings such as vocal guidance and locale. It returns a promise that resolves to indicate the verification outcome.
+To initiate the ID verification process, use the `start function. This function requires a configuration object which includes the environment, session token, and optional settings such as vocal guidance and locale. It returns a promise that resolves to indicate the verification outcome.
 
 #### Function Signature
 
 ```javascript
-processIDMatching(config: VoveConfig): Promise<VoveStatus>
+start(config: VoveConfig): Promise<VoveStatus>
 ```
 
 + `config`: Configuration object for the verification process, which includes:
@@ -44,7 +44,7 @@ processIDMatching(config: VoveConfig): Promise<VoveStatus>
 #### Example Usage
 
 ```javascript
-import { processIDMatching, VoveEnvironment, VoveLocale } from '@vove-id/react-native-sdk';
+import { start, VoveEnvironment, VoveLocale } from '@vove-id/react-native-sdk';
 
 const config = {
   environment: VoveEnvironment.Production,
@@ -53,7 +53,7 @@ const config = {
   locale: VoveLocale.EN
 };
 
-processIDMatching(config)
+start(config)
   .then((status) => {
     switch (status) {
       case 'success':
@@ -76,7 +76,7 @@ processIDMatching(config)
 
 ### Handling Verification Results
 
-The promise returned by `processIDMatching` will:
+The promise returned by `start` will:
 
 - Resolve with a status string for "success", "pending", or "canceled" scenarios, indicating the verification outcome.
 - Reject in the case of a "failure", providing an error object detailing the failure reason.
