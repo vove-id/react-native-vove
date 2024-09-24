@@ -3,7 +3,7 @@ import VoveSDK
 @objc(VoveModule)
 class VoveModule: NSObject {
     @objc(processIDMatching:withResolver:withRejecter:)
-    func processIDMatching(config: NSDictionary, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
+    func start(config: NSDictionary, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
       guard let environment = config["environment"] as? String,
                 let sessionToken = config["sessionToken"] as? String else {
               let error = NSError(domain: "", code: 200, userInfo: [NSLocalizedDescriptionKey: "Invalid parameters"])

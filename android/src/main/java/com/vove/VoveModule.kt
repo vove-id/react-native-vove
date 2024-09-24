@@ -23,7 +23,7 @@ class VoveModule(reactContext: ReactApplicationContext) :
   // Example method
   // See https://reactnative.dev/docs/native-modules-android
   @ReactMethod
-  fun processIDMatching(params: ReadableMap, promise: Promise) {
+  fun start(params: ReadableMap, promise: Promise) {
     val sessionToken = params.getString("sessionToken")?.let { it } ?: ""
     var environment: VoveEnvironment = VoveEnvironment.SANDBOX
     try {

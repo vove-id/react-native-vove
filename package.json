@@ -1,6 +1,6 @@
 {
   "name": "@vove-id/react-native-sdk",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "VOVE ID - Instant, seamless identity verification. Designed for trust, user-centric, fully compliant with AML/KYC. Optimized for the MEA region.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
