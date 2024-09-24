@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import {
-  processIDMatching,
+  start,
   VoveEnvironment,
   VoveLocale,
   VoveStatus,
@@ -45,7 +45,7 @@ export default function App() {
   }, []);
   const onStartPress = () => {
     if (sessionToken.current) {
-      processIDMatching({
+      start({
         environment: VoveEnvironment.Sandbox,
         sessionToken: sessionToken.current,
         enableVocalGuidance: true,

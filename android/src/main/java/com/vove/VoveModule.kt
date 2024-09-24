@@ -39,7 +39,7 @@ class VoveModule(reactContext: ReactApplicationContext) :
     Vove.setLocale(currentActivity!!, locale)
     Vove.setEnableVocalGuidance(isVocalGuidanceEnabled)
     currentActivity?.let {
-      Vove.processIDMatching(
+      Vove.start(
         it,
         environment,
         sessionToken

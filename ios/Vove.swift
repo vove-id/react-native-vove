@@ -39,7 +39,7 @@ class VoveModule: NSObject {
             Vove.setVocalGuidanceEnabled(enableVocalGuidance)
         }
       DispatchQueue.main.async {
-          Vove.processIDMatching(environment: voveEnv, sessionToken: sessionToken) { verificationResult in
+          Vove.start(environment: voveEnv, sessionToken: sessionToken) { verificationResult in
               switch (verificationResult) {
               case .failure:
                   let error = NSError(domain: "", code: 200, userInfo: [NSLocalizedDescriptionKey: "Verification failed"])

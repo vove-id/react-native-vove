@@ -40,6 +40,6 @@ type VoveConfig = {
   locale?: VoveLocale;
 };
 
-export function processIDMatching(config: VoveConfig): Promise<VoveStatus> {
-  return Vove.processIDMatching(config);
+export function start(config: VoveConfig): Promise<VoveStatus> {
+  return Vove.start(config);
 }
