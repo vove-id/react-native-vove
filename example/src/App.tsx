@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import {
   start,
+  initialize,
   VoveEnvironment,
   VoveLocale,
   VoveStatus,
@@ -39,9 +40,18 @@ export default function App() {
   const sessionToken = useRef<string | undefined>();
 
   useEffect(() => {
-    startUserSession().then((token) => {
-      sessionToken.current = token;
-    });
+    initialize({
+      environment: VoveEnvironment.Sandbox,
+      publicKey:
+        '6fc3fb00391916cfcd0e47d3a11a243054413ffcf220f9b3adb8d3c6db307842',
+    })
+      .then(() => console.log('Initialized'))
+      .catch((e) => console.error(e));
+    startUserSession()
+      .then((token) => {
+        sessionToken.current = token;
+      })
+      .catch((e) => console.error(e));
   }, []);
   const onStartPress = () => {
     if (sessionToken.current) {
@@ -49,7 +59,7 @@ export default function App() {
         environment: VoveEnvironment.Sandbox,
         sessionToken: sessionToken.current,
         enableVocalGuidance: true,
-        locale: VoveLocale.AR_MA,
+        locale: VoveLocale.AR,
       }).then(setResult);
     }
   };

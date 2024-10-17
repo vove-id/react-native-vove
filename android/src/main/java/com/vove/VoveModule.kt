@@ -6,11 +6,10 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.UiThreadUtil.runOnUiThread
-import com.voveid.sdk.VerificationResult
 import com.voveid.sdk.Vove
 import com.voveid.sdk.VoveEnvironment
 import com.voveid.sdk.VoveLocale
-
+import com.voveid.sdk.model.VerificationResult
 
 
 class VoveModule(reactContext: ReactApplicationContext) :
@@ -41,7 +40,6 @@ class VoveModule(reactContext: ReactApplicationContext) :
     currentActivity?.let {
       Vove.start(
         it,
-        environment,
         sessionToken
       ) { verificationResult: VerificationResult ->
         runOnUiThread {
@@ -62,6 +60,31 @@ class VoveModule(reactContext: ReactApplicationContext) :
               promise.resolve("cancelled")
             }
           }
+        }
+      }
+    }
+  }
+
+  @ReactMethod
+  fun initialize(params: ReadableMap, promise: Promise) {
+    val sessionToken = params.getString("publicKey")?.let { it } ?: ""
+    var environment: VoveEnvironment = VoveEnvironment.SANDBOX
+    try {
+      environment = determineEnvironment(params.getString("environment")!!)
+    } catch (e: IllegalArgumentException) {
+      e.printStackTrace()
+    }
+    val currentActivity = currentActivity
+    currentActivity?.let {
+      Vove.initialize(
+        it,
+        environment,
+        sessionToken
+      ) { isInitialized: Boolean ->
+        if (isInitialized) {
+          promise.resolve("success")
+        } else {
+          promise.reject("failure", "Initialization failed")
         }
       }
     }

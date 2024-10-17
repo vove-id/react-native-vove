@@ -33,13 +33,20 @@ export const enum VoveLocale {
   AR = 'AR',
   AR_MA = 'AR_MA',
 }
-type VoveConfig = {
+type VoveStartConfig = {
   environment: VoveEnvironment;
   sessionToken: string;
   enableVocalGuidance?: boolean;
   locale?: VoveLocale;
 };
+type VoveInitializeConfig = {
+  environment: VoveEnvironment;
+  publicKey: string;
+};
 
-export function start(config: VoveConfig): Promise<VoveStatus> {
+export function start(config: VoveStartConfig): Promise<VoveStatus> {
   return Vove.start(config);
+}
+export function initialize(config: VoveInitializeConfig): Promise<void> {
+  return Vove.initialize(config);
 }
