@@ -3,8 +3,8 @@ import { useEffect, useRef } from 'react';
 
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import {
-  start,
   initialize,
+  start,
   VoveEnvironment,
   VoveLocale,
   VoveStatus,
@@ -12,9 +12,9 @@ import {
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 
-const AuthURL = 'https://demo-api.voveid.com';
+const AuthURL = 'https://demo-api.voveid.net';
 const authToken =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtoYWxpZCIsInN1YiI6MiwiaWF0IjoxNzEzMzA0ODY3LCJleHAiOjE3MTU4OTY4Njd9.AGEdx0SSvOWB0l0tkfMFdrYm2qImHQGFzzjySAYTNEE';
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9Adm92ZWlkLm5ldCIsInN1YiI6MiwiaWF0IjoxNzMyMDk1MDI3LCJleHAiOjE3MzQ2ODcwMjd9.v0ICdWEDutahoZqGBAUiHPWjFIiW6G0i9_aiC6P3QMw';
 
 const startUserSession = async () => {
   try {
@@ -29,8 +29,8 @@ const startUserSession = async () => {
       },
       body: JSON.stringify(body),
     });
-    const { token } = await response.json();
-    return token;
+    const res = await response.json();
+    return res?.token;
   } catch (e) {
     console.error(e);
   }
@@ -40,18 +40,19 @@ export default function App() {
   const sessionToken = useRef<string | undefined>();
 
   useEffect(() => {
-    initialize({
-      environment: VoveEnvironment.Sandbox,
-      publicKey:
-        '6fc3fb00391916cfcd0e47d3a11a243054413ffcf220f9b3adb8d3c6db307842',
-    })
-      .then(() => console.log('Initialized'))
-      .catch((e) => console.error(e));
-    startUserSession()
-      .then((token) => {
-        sessionToken.current = token;
-      })
-      .catch((e) => console.error(e));
+    const init = async () => {
+      try {
+        await initialize({
+          environment: VoveEnvironment.Sandbox,
+          publicKey:
+            '6fc3fb00391916cfcd0e47d3a11a243054413ffcf220f9b3adb8d3c6db307842',
+        });
+        sessionToken.current = await startUserSession();
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    init();
   }, []);
   const onStartPress = () => {
     if (sessionToken.current) {
