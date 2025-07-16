@@ -61,13 +61,17 @@ export default function App() {
         sessionToken: sessionToken.current,
         enableVocalGuidance: true,
         locale: VoveLocale.AR,
-      }).then(setResult);
+      }).then((res) => {
+        setResult(res.status);
+        console.log({ action: res.action });
+      });
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      {/* eslint-disable-next-line react-native/no-inline-styles */}
+      <Text style={{ color: 'red' }}>Result: {result}</Text>
       <Pressable style={styles.button} onPress={onStartPress}>
         <Text>Start ID Matching</Text>
       </Pressable>

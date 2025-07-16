@@ -26,6 +26,7 @@ export const enum VoveStatus {
   Canceled = 'canceled', // user canceled flow
   Pending = 'pending', // pending more validations
   Success = 'success', // success
+  MaxAttempts = 'max_attempts', // max attempts reached
 }
 export const enum VoveLocale {
   EN = 'EN',
@@ -38,13 +39,16 @@ type VoveStartConfig = {
   sessionToken: string;
   enableVocalGuidance?: boolean;
   locale?: VoveLocale;
+  showUI?: boolean;
 };
 type VoveInitializeConfig = {
   environment: VoveEnvironment;
   publicKey: string;
 };
 
-export function start(config: VoveStartConfig): Promise<VoveStatus> {
+export function start(
+  config: VoveStartConfig
+): Promise<{ status: VoveStatus; action: string }> {
   return Vove.start(config);
 }
 export function initialize(config: VoveInitializeConfig): Promise<void> {

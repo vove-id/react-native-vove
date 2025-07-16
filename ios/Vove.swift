@@ -27,24 +27,29 @@ class VoveModule: NSObject {
         if let enableVocalGuidance = config["enableVocalGuidance"] as? Bool {
             Vove.setVocalGuidanceEnabled(enableVocalGuidance)
         }
+      
+        let showUI = (config["showUI"] as? Bool) ?? true
       DispatchQueue.main.async {
-          Vove.start(sessionToken: sessionToken) { verificationResult in
+          Vove.start(sessionToken: sessionToken, showUI: showUI) { verificationResult, action in
+              var result: [String: Any] = [:]
               switch (verificationResult) {
+              case .success:
+                  result["status"] = "success"
               case .failure:
-                  let error = NSError(domain: "", code: 200, userInfo: [NSLocalizedDescriptionKey: "Verification failed"])
-                  reject("failure", "Verification failed", error)
-                  break
-              case .pending: resolve("pending")
-                  break
-              case .success: resolve("success")
-                  break
-              case .canceled: resolve("canceled")
-                  break
+                  result["status"] = "failure"
+              case .pending:
+                  result["status"] = "pending"
+              case .canceled:
+                  result["status"] = "cancelled"
+              case .maxAttempts:
+                  result["status"] = "max-attempts"
+                  result["action"] = action
               case .none:
-                  resolve("canceled")
+                break
               case .some(_):
-                  resolve("canceled")
+                break
               }
+              resolve(result)
           }
       }
 
