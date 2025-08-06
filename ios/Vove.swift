@@ -1,7 +1,24 @@
 import VoveSDK
+import React
 
 @objc(VoveModule)
-class VoveModule: NSObject {
+class VoveModule: RCTEventEmitter {
+    
+    override func supportedEvents() -> [String]! {
+        return ["onMaxAttemptsCallToAction"]
+    }
+    
+    private var hasMaxAttemptsListener = false
+    
+    @objc(setMaxAttemptsListenerActive:)
+    func setMaxAttemptsListenerActive(active: NSNumber) {
+      hasMaxAttemptsListener = active.boolValue
+    }
+        
+    private func sendEvent(name: String, body: Any?) {
+        // Send event to React Native
+        self.sendEvent(withName: name, body: body)
+    }
     @objc(start:withResolver:withRejecter:)
     func start(config: NSDictionary, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
         guard let sessionToken = config["sessionToken"] as? String else {
@@ -29,29 +46,41 @@ class VoveModule: NSObject {
         }
       
         let showUI = (config["showUI"] as? Bool) ?? true
-      DispatchQueue.main.async {
-          Vove.start(sessionToken: sessionToken, showUI: showUI) { verificationResult, action in
-              var result: [String: Any] = [:]
-              switch (verificationResult) {
-              case .success:
-                  result["status"] = "success"
-              case .failure:
-                  result["status"] = "failure"
-              case .pending:
-                  result["status"] = "pending"
-              case .canceled:
-                  result["status"] = "cancelled"
-              case .maxAttempts:
-                  result["status"] = "max-attempts"
-                  result["action"] = action
-              case .none:
-                break
-              case .some(_):
-                break
-              }
-              resolve(result)
-          }
-      }
+        
+        let handleVerificationResult = { (verificationResult: VoveSDK.VerificationResult?) in
+            var result: [String: Any] = [:]
+            switch (verificationResult) {
+            case .success:
+                result["status"] = "success"
+            case .failure:
+                result["status"] = "failure"
+            case .pending:
+                result["status"] = "pending"
+            case .canceled:
+                result["status"] = "cancelled"
+            case .maxAttempts:
+                result["status"] = "max-attempts"
+              break
+            case .none:
+              break
+            case .some(_):
+              break
+            }
+            resolve(result)
+        }
+      
+        DispatchQueue.main.async {
+            print("hasMaxAttemptsListener: \(self.hasMaxAttemptsListener)")
+            // Check if we have max attempts listener active
+            if self.hasMaxAttemptsListener {
+                Vove.start(sessionToken: sessionToken, completion: handleVerificationResult, maxAttemptsActionCallback: {
+                    handleVerificationResult(VoveSDK.VerificationResult.maxAttempts)    
+                    self.sendEvent(name: "onMaxAttemptsCallToAction", body: nil)
+                })
+            } else {
+                Vove.start(sessionToken: sessionToken, completion: handleVerificationResult)
+            }
+        }
 
   }
   @objc(initialize:withResolver:withRejecter:)

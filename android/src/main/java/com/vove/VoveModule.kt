@@ -5,12 +5,15 @@ import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.bridge.Callback
 import com.facebook.react.bridge.UiThreadUtil.runOnUiThread
 import com.facebook.react.bridge.Arguments
+import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.voveid.sdk.Vove
 import com.voveid.sdk.VoveEnvironment
 import com.voveid.sdk.VoveLocale
 import com.voveid.sdk.model.VerificationResult
+import com.voveid.sdk.interfaces.MaxAttemptsCallback
 
 
 class VoveModule(reactContext: ReactApplicationContext) :
@@ -18,6 +21,31 @@ class VoveModule(reactContext: ReactApplicationContext) :
 
   override fun getName(): String {
     return NAME
+  }
+
+  private fun sendEvent(eventName: String, params: com.facebook.react.bridge.WritableMap?) {
+    reactApplicationContext
+      .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+      .emit(eventName, params)
+  }
+
+  private var hasMaxAttemptsListener = false
+
+  @ReactMethod
+  fun setMaxAttemptsListenerActive(active: Boolean) {
+    hasMaxAttemptsListener = active
+  }
+
+  @ReactMethod
+  fun addListener(eventName: String) {
+    // This method is required by NativeEventEmitter
+    // For now, we'll just handle it at the module level
+  }
+
+  @ReactMethod
+  fun removeListeners(count: Int) {
+    // This method is required by NativeEventEmitter
+    // For now, we'll just handle it at the module level
   }
 
   // Example method
@@ -40,11 +68,7 @@ class VoveModule(reactContext: ReactApplicationContext) :
     Vove.setLocale(currentActivity!!, locale)
     Vove.setEnableVocalGuidance(isVocalGuidanceEnabled)
     currentActivity?.let {
-      Vove.start(
-        it,
-        sessionToken,
-        showUI,
-      ) { verificationResult: VerificationResult, action: String? ->
+      val handleVerificationResult = { verificationResult: VerificationResult ->
         runOnUiThread {
           when (verificationResult) {
             VerificationResult.SUCCESS ->
@@ -55,10 +79,33 @@ class VoveModule(reactContext: ReactApplicationContext) :
               promise.resolve(createResult("pending"))
             VerificationResult.CANCELLED ->
               promise.resolve(createResult("cancelled"))
-            VerificationResult.MAX_ATTEMPTS_REACHED ->
-              promise.resolve(createResult("max-attempts", action))
+            VerificationResult.MAX_ATTEMPTS_REACHED -> {
+              promise.resolve(createResult("max-attempts"))
+            }
           }
         }
+      }
+
+      if (hasMaxAttemptsListener) {
+        Vove.start(
+          it,
+          sessionToken,
+          showUI,
+          handleVerificationResult,
+          object : MaxAttemptsCallback {
+            override fun onMaxAttemptsActionClicked() {
+              handleVerificationResult(VerificationResult.MAX_ATTEMPTS_REACHED)
+              sendEvent("onMaxAttemptsCallToAction", null)
+            }
+          }
+        )
+      } else {
+        Vove.start(
+          it,
+          sessionToken,
+          showUI,
+          handleVerificationResult
+        )
       }
     }
   }

@@ -4,6 +4,8 @@ import { useEffect, useRef } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import {
   initialize,
+  addMaxAttemptsListener,
+  removeMaxAttemptsListener,
   start,
   VoveEnvironment,
   VoveLocale,
@@ -63,10 +65,18 @@ export default function App() {
         locale: VoveLocale.AR,
       }).then((res) => {
         setResult(res.status);
-        console.log({ action: res.action });
       });
     }
   };
+
+  useEffect(() => {
+    addMaxAttemptsListener(() => {
+      console.log('max attempts');
+    });
+    return () => {
+      removeMaxAttemptsListener();
+    };
+  }, []);
 
   return (
     <View style={styles.container}>
