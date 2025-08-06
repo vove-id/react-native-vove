@@ -38,6 +38,7 @@ export const enum VoveStatus {
 export const enum VoveLocale {
   EN = 'EN',
   FR = 'FR',
+  DE = 'DE',
   AR = 'AR',
   AR_MA = 'AR_MA',
 }

@@ -35,6 +35,8 @@ class VoveModule: RCTEventEmitter {
                     return .arMA
                 case "FR":
                     return .fr
+                case "DE":
+                    return .de
                 default:
                     return .en
                 }
