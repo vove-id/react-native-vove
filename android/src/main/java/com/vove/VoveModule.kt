@@ -36,6 +36,17 @@ class VoveModule(reactContext: ReactApplicationContext) :
     hasMaxAttemptsListener = active
   }
 
+  @ReactMethod
+  fun addListener(eventName: String) {
+    // This method is required by NativeEventEmitter
+    // For now, we'll just handle it at the module level
+  }
+
+  @ReactMethod
+  fun removeListeners(count: Int) {
+    // This method is required by NativeEventEmitter
+    // For now, we'll just handle it at the module level
+  }
 
   // Example method
   // See https://reactnative.dev/docs/native-modules-android
