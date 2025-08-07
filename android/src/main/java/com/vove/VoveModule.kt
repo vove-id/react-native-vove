@@ -72,15 +72,15 @@ class VoveModule(reactContext: ReactApplicationContext) :
         runOnUiThread {
           when (verificationResult) {
             VerificationResult.SUCCESS ->
-              promise.resolve(createResult("success"))
+              promise.resolve("success")
             VerificationResult.FAILURE ->
-              promise.resolve(createResult("failure"))
+              promise.resolve("failure")
             VerificationResult.PENDING ->
-              promise.resolve(createResult("pending"))
+              promise.resolve("pending")
             VerificationResult.CANCELLED ->
-              promise.resolve(createResult("cancelled"))
+              promise.resolve("cancelled")
             VerificationResult.MAX_ATTEMPTS_REACHED -> {
-              promise.resolve(createResult("max-attempts"))
+              promise.resolve("max-attempts")
             }
           }
         }
@@ -133,15 +133,6 @@ class VoveModule(reactContext: ReactApplicationContext) :
         }
       }
     }
-  }
-
-  private fun createResult(status: String, action: String? = null): com.facebook.react.bridge.WritableMap {
-    val result = Arguments.createMap()
-    result.putString("status", status)
-    if (action != null) {
-      result.putString("action", action)
-    }
-    return result
   }
 
   fun determineEnvironment(env: String): VoveEnvironment {

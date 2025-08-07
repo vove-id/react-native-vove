@@ -54,9 +54,7 @@ type VoveInitializeConfig = {
   publicKey: string;
 };
 
-export function start(
-  config: VoveStartConfig
-): Promise<{ status: VoveStatus }> {
+export function start(config: VoveStartConfig): Promise<VoveStatus> {
   return Vove.start(config);
 }
 export function initialize(config: VoveInitializeConfig): Promise<void> {

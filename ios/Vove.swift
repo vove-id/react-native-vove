@@ -50,37 +50,35 @@ class VoveModule: RCTEventEmitter {
         let showUI = (config["showUI"] as? Bool) ?? true
         
         let handleVerificationResult = { (verificationResult: VoveSDK.VerificationResult?) in
-            var result: [String: Any] = [:]
             switch (verificationResult) {
             case .success:
-                result["status"] = "success"
+                resolve("success")
             case .failure:
-                result["status"] = "failure"
+                resolve("failure")
             case .pending:
-                result["status"] = "pending"
+                resolve("pending")
             case .canceled:
-                result["status"] = "cancelled"
+                resolve("cancelled")
             case .maxAttempts:
-                result["status"] = "max-attempts"
+                resolve("max-attempts")
               break
             case .none:
               break
             case .some(_):
               break
             }
-            resolve(result)
         }
       
         DispatchQueue.main.async {
             print("hasMaxAttemptsListener: \(self.hasMaxAttemptsListener)")
             // Check if we have max attempts listener active
             if self.hasMaxAttemptsListener {
-                Vove.start(sessionToken: sessionToken, completion: handleVerificationResult, maxAttemptsActionCallback: {
+                Vove.start(sessionToken: sessionToken, showUI: showUI, completion: handleVerificationResult, maxAttemptsActionCallback: {
                     handleVerificationResult(VoveSDK.VerificationResult.maxAttempts)    
                     self.sendEvent(name: "onMaxAttemptsCallToAction", body: nil)
                 })
             } else {
-                Vove.start(sessionToken: sessionToken, completion: handleVerificationResult)
+                Vove.start(sessionToken: sessionToken, showUI: showUI, completion: handleVerificationResult)
             }
         }
 

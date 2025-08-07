@@ -63,8 +63,9 @@ export default function App() {
         sessionToken: sessionToken.current,
         enableVocalGuidance: true,
         locale: VoveLocale.AR,
+        showUI: true,
       }).then((res) => {
-        setResult(res.status);
+        setResult(res);
       });
     }
   };
